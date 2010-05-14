@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>FIFOLinks</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="fifolinks.js"></script>
+
+    <style type="text/css">
+      .url {
+        display:none;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="error" style="display:none;"></div>
+
+    <input id="new_title" type="text" placeholder="Title" />
+    <input id="new_url" type="text" placeholder="URL" />
+    <a id="save_link" href="#">Save</a>
+
+    <div>
+      Unread
+      <ul id="unread_links" class="unread">
+      </ul>
+
+      Read
+      <ul id="read_links" class="read">
+      </ul>
+    </div>
+
+    <div id="sorry" style="display:none;">
+      Sorry, but this site requires a browser that supports client-side storage. You can
+      come back using Safari or Chrome if you still want to check it out.
+    </div>
+  </body>
+</html>
