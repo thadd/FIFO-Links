@@ -150,7 +150,9 @@ function handleError(tx, err) {
   // No such table
   if (err.code == 1 && err.message == "no such table: links") {
     tx.executeSql("CREATE TABLE links (id REAL UNIQUE, label TEXT, url TEXT UNIQUE, read BOOLEAN, timestamp REAL)", [], null, handleError);
+  } else if (err.code == 1 && err.message == "table links already exists") {
+    // Do nothing
   } else {
-    $('#error').html("SQL ERROR[" +err.code+ "]: " + err.message).show('medium');
+    $('#error').html("SQL ERROR[" +err.code+ "]: " + err.message).show();
   }
 }

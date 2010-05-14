@@ -47,7 +47,7 @@ if (/google\.com\/reader/.test(ls_href)) {
 try{
 ls_frame = ls_d.createElement('iframe')
 ls_frame.setAttribute('style','width:0px; height:0px; border: 0px');
-ls_frame.setAttribute('src','http://localhost/~tselden/fifolinks/catcher.html?url='+encodeURIComponent(ls_url)+'&label='+encodeURIComponent(ls_label));
+ls_frame.setAttribute('src','http://fifolinks.com/catcher.html?url='+encodeURIComponent(ls_url)+'&label='+encodeURIComponent(ls_label));
 ls_d.body.appendChild(ls_frame);
 setTimeout(function(){ls_frame.parentNode.removeChild(ls_frame)},10000);
 } catch(err) {}

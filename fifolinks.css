@@ -4,6 +4,10 @@ html, body {
   height: 100%;
 }
 
+.links {
+  clear: both;
+}
+
 .link_group {
   border: 2px solid #888;
   -webkit-box-shadow: 0 0 12px #666;
@@ -154,4 +158,9 @@ p a {
 
 p.close {
   text-align: right;
+}
+
+.ads {
+  margin-top: 50px;
+  text-align: center;
 }
