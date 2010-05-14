@@ -12,8 +12,9 @@ $(function() {
 
       db.transaction(function(tx) {
           monthAgo = new Date((new Date()).getTime() - 2629743830).getTime();
-          tx.executeSql("DELETE FROM links WHERE (timestamp < ? AND read = ?)", [monthAgo, true], loadLinks, handleError);
-          tx.executeSql("SELECT * FROM links ORDER BY timestamp DESC", [], loadLinks, handleError);
+          tx.executeSql("DELETE FROM links WHERE (timestamp < ? AND read = ?)", [monthAgo, true], null, handleError);
+          tx.executeSql("SELECT * FROM links WHERE read = ? ORDER BY timestamp ASC", [false], loadLinks, handleError);
+          tx.executeSql("SELECT * FROM links WHERE read = ? ORDER BY timestamp DESC", [true], loadLinks, handleError);
         });
 
     } else {
@@ -53,32 +54,95 @@ function addLink(url,label) {
 function addLinkElement(el,item) {
   el.append(
     '<li id="link_' + item.id + '" class="link">' +
-      '<span class="label">' +
-      '<a href="' + item.url + '">' + item.label + '</a>' +
-      '</span>' +
-      '<span class="url">' + item.url + '</span>' +
+      '<a href="' + item.url + '" ' + (item.read == 'true' ? 'class="primary read">' : 'class="primary">') +
+      '<div class="label">' + item.label + '</div>' +
+      '<div class="url">' + item.url + '</div>' +
+      '</a>' +
+      '<div class="date">updated ' + (new Date(item.timestamp)).toLocaleString() + '</div>' +
+      '<div class="actions">' +
+      '<a href="#" class="swap">' + (item.read == 'true' ? 'Mark unread' : 'Mark read') + '</a>' +
+      '<span class="separator">|</span>' +
+      '<a href="#" class="delete">Delete</a>' +
       '</li>'
   );
 
-  el.find('a').click(function() {
-      var linkId = $(this).parents('li').attr('id');
-      var sqlId = linkId.replace('link_','');
+  el.find('#link_' + item.id + ' a.primary').click(linkClick);
+  el.find('#link_' + item.id + ' a.swap').click(swapClick);
+  el.find('#link_' + item.id + ' a.delete').click(deleteClick);
+}
 
-      var newParentType = "read";
-      var newReadType = true;
-      if ($(this).parents('ul').hasClass("read")) {
-        newParentType = "unread";
-        newReadType = false;
-      }
+function isLinkRead(el) {
+  return $(el).parents('ul').hasClass('read');
+}
 
-      db.transaction(function(tx) {
-          tx.executeSql("UPDATE links SET read = ?, timestamp = ? WHERE id = ?",
-            [newReadType, (new Date()).getTime(), sqlId],
-            loadLinks, handleError
-          );
+function linkClick() {
+  var linkId = $(this).parents('li').attr('id');
+  var sqlId = linkId.replace('link_','');
 
-          $('#' +newParentType+ '_links').prepend($('#'+linkId))
-        });
+  if (!isLinkRead($(this))) {
+    swapLink(linkId);
+    markLink(sqlId,true);
+  }
+}
+
+function swapClick() {
+  var linkId = $(this).parents('li').attr('id');
+  var sqlId = linkId.replace('link_','');
+
+  read = isLinkRead($(this));
+
+  swapLink(linkId);
+  markLink(sqlId,!read);
+
+  return false;
+}
+
+function deleteClick() {
+  var linkId = $(this).parents('li').attr('id');
+  var sqlId = linkId.replace('link_','');
+
+  db.transaction(function(tx) {
+      tx.executeSql("DELETE FROM links WHERE id = ?",
+        [sqlId], null, handleError
+      );
+    });
+
+  $('#'+linkId).remove();
+
+  return false;
+}
+
+function swapLink(id) {
+  var newParentType = "read";
+
+  var el = $('#' + id);
+
+  if (el.parents('ul').hasClass("read")) {
+    newParentType = "unread";
+  }
+
+  // Move the link
+  if (newParentType == "unread") {
+    $('#' +newParentType+ '_links').append(el)
+  } else {
+    $('#' +newParentType+ '_links').prepend(el)
+  }
+
+  var link = el.find('a.primary');
+  link.removeClass('read');
+  if (newParentType == 'read') link.addClass('read');
+
+  // Change the button text
+  $('ul.unread a.swap').html('Mark read');
+  $('ul.read a.swap').html('Mark unread');
+}
+
+function markLink(id,read) {
+  db.transaction(function(tx) {
+      tx.executeSql("UPDATE links SET read = ?, timestamp = ? WHERE id = ?",
+        [read, (new Date()).getTime(), id],
+        null, handleError
+      );
     });
 }
 

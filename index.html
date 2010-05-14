@@ -3,38 +3,97 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <title>FIFOLinks</title>
+    <title>FIFO Links</title>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script src="fifolinks.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/reset/reset-min.css">
+    <link rel='stylesheet' type='text/css' href='fifolinks.css' />
 
-    <style type="text/css">
-      .url {
-        display:none;
-      }
-    </style>
+    <script type="text/javascript">
+      $(function() {
+        $('a.about').click(function(){
+          $('#about').show();
+          return false;
+        });
+        $('a.bookmarklet').click(function(){
+          $('#bookmarklet').show();
+          return false;
+        });
+        $('a.close').click(function(){
+          $('.callout').hide();
+          return false;
+        });
+      });
+    </script>
 
   </head>
   <body>
-    <div id="error" style="display:none;"></div>
+    <div id="body">
 
-    <input id="new_title" type="text" placeholder="Title" />
-    <input id="new_url" type="text" placeholder="URL" />
-    <a id="save_link" href="#">Save</a>
+      <div class="header">
+        <h1>FIFO Links</h1>
+        <h3>Making it easy to view web pages when you're ready</h3>
+        <div class="links">
+          <a href="#" class="about">About this site</a>
+          <span class="separator">|</span>
+          <a href="#" class="bookmarklet">Get the bookmarklet</a>
+        </div>
+      </div>
 
-    <div>
-      Unread
-      <ul id="unread_links" class="unread">
-      </ul>
+      <div id="error" style="display:none;"></div>
 
-      Read
-      <ul id="read_links" class="read">
-      </ul>
-    </div>
+      <div id="links">
+        <div class="link_group" id="unread_link_group">
+          <h1>Unread</h1>
+          <ul id="unread_links" class="unread">
+          </ul>
+        </div>
 
-    <div id="sorry" style="display:none;">
-      Sorry, but this site requires a browser that supports client-side storage. You can
-      come back using Safari or Chrome if you still want to check it out.
+        <div class="link_group" id="read_link_group">
+          <h1>Read</h1>
+          <ul id="read_links" class="read">
+          </ul>
+        </div>
+      </div>
+
+      <div id="about" class="callout">
+        <div class="message">
+          <h1>About this site</h1>
+
+          <p>This site was built to replace the capability of Instapaper's read later
+          functionality after they got rid of the auto-archive feature. It uses HTML5 
+          client-side databases so no information is stored on our server, it's stored
+          in your browser. Links are deleted after 30 days.</p>
+
+          <p>It's called FIFO Links because you get a First-In First-Out queue of your
+          links to read later.</p>
+
+          <p>This site was made by <a href="http://twitter.com/thadd">@thadd</a>.</p>
+
+          <p class="link_block"><a href="#" class="close">Close</a></p>
+        </div>
+      </div>
+
+      <div id="bookmarklet" class="callout">
+        <div class="message">
+          <h1>Get the bookmarklet</h1>
+
+          <p>Drag the link below to your bookmarks bar and then every time you click it,
+          the current page will be saved to your links.</p>
+
+          <p class="link_block"><a href="javascript:(function(){var%20ls_d=document,ls_z=ls_d.createElement('scr'+'ipt'),ls_b=ls_d.body;try{if(!ls_b)throw(0);ls_z.setAttribute('src','http://fifolinks.com/linksaver.js');ls_b.appendChild(ls_z);}catch(e){alert('Please%20wait%20until%20the%20page%20has%20loaded.');}})()">Read later</a></p>
+
+          <p class="link_block close"><a href="#" class="close">Close</a></p>
+        </div>
+      </div>
+
+      <div id="sorry" class="callout">
+        <div class="message">
+          Sorry, but this site requires a browser that supports client-side storage. You can
+          come back using Safari or Chrome if you still want to check it out.
+        </div>
+      </div>
     </div>
   </body>
 </html>
