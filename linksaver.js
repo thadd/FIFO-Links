@@ -1,77 +1,58 @@
-var d = document;
-var href = document.location.href;
+var ls_d = document;
+var ls_href = document.location.href;
 
-var sav = d.createElement('div');
-sav.setAttribute('id','fifo_save');
-sav.setAttribute('style','position:absolute;top:30px;left:30px;background-color:rgba(180,210,180,0.85);padding:20px 50px;font-size:16pt;border:2px solid #444;z-index:99999;');
-sav.innerHTML = "Saving...";
-d.body.appendChild(sav);
+var ls_sav = ls_d.createElement('div');
+ls_sav.setAttribute('id','fifo_save');
+ls_sav.setAttribute('style','text-align:center;width:150px;position:absolute;top:30px;left:30px;background-color:rgba(180,210,180,0.85);padding:20px 50px;font-size:16pt;border:2px solid #444;z-index:99999;');
+ls_sav.innerHTML = "Saving...";
+ls_d.body.appendChild(ls_sav);
 
-if (/google\.com\/reader/.test(href)) {
-  var nodes = d.getElementById('current-entry').childNodes;
-  for (var i=0; i<nodes.length; i++) {
-    if (/collapsed/.test(nodes[i].className)) {
-      nodes = nodes[i].childNodes;
+if (/google\.com\/reader/.test(ls_href)) {
+  var ls_nodes = ls_d.getElementById('current-entry').childNodes;
+  for (var ls_i=0; ls_i<ls_nodes.length; ls_i++) {
+    if (/collapsed/.test(ls_nodes[ls_i].className)) {
+      ls_nodes = ls_nodes[ls_i].childNodes;
       console.log("Found the first node");
       break;
     }
   }
-  for (var i=0; i<nodes.length; i++) {
-    if (/entry-main/.test(nodes[i].className)) {
-      nodes = nodes[i].childNodes;
+  for (var ls_i=0; ls_i<ls_nodes.length; ls_i++) {
+    if (/entry-main/.test(ls_nodes[ls_i].className)) {
+      ls_nodes = ls_nodes[ls_i].childNodes;
       console.log("Found the second node");
       break;
     }
   }
-  for (var i=0; i<nodes.length; i++) {
-    if (/entry-original/.test(nodes[i].className)) {
+  for (var ls_i=0; ls_i<ls_nodes.length; ls_i++) {
+    if (/entry-original/.test(ls_nodes[ls_i].className)) {
       console.log("Found the URL");
-      var url = nodes[i].href;
-    } else if (/entry-secondary/.test(nodes[i].className)) {
+      var ls_url = ls_nodes[ls_i].href;
+    } else if (/entry-secondary/.test(ls_nodes[ls_i].className)) {
       console.log("Found the subnode");
-      var subnodes = nodes[i].childNodes;
-      for (var j=0; j<subnodes.length; j++) {
-        if (/entry-title/.test(subnodes[j].className)) {
+      var ls_subnodes = ls_nodes[ls_i].childNodes;
+      for (var ls_j=0; ls_j<ls_subnodes.length; ls_j++) {
+        if (/entry-title/.test(ls_subnodes[ls_j].className)) {
           console.log("Found the label");
-          var label = subnodes[j].innerHTML;
+          var ls_label = ls_subnodes[ls_j].innerHTML;
           break;
         }
       }
     }
   }
 } else {
-  var url = href;
-  var label = d.title;
+  var ls_url = ls_href;
+  var ls_label = ls_d.title;
 }
 
-console.log(url)
-console.log(label)
+try{
+ls_frame = ls_d.createElement('iframe')
+ls_frame.setAttribute('style','width:0px; height:0px; border: 0px');
+ls_frame.setAttribute('src','http://localhost/~tselden/fifolinks/catcher.html?url='+encodeURIComponent(ls_url)+'&label='+encodeURIComponent(ls_label));
+ls_d.body.appendChild(ls_frame);
+setTimeout(function(){ls_frame.parentNode.removeChild(ls_frame)},10000);
+} catch(err) {}
 
-if (window.openDatabase) {
-  var highestId = 0;
-  db = window.openDatabase("fifolinks", "0.1");
-  db.transaction(function(tx) {
-      tx.executeSql("SELECT * FROM links", [], 
-        function(tx,results){
-          for (var i=0; i < results.rows.length; i++) {
-            var item = results.rows.item(i);
-            if (item.id >= highestId) highestId = item.id + 1;
-          }
-        }, null);
-    });
 
-  db.transaction(function(tx) {
-      tx.executeSql("INSERT INTO links(id,label,url,read,timestamp) VALUES(?,?,?,?,?)",
-        [
-        highestId,
-        url,
-        label,
-        false,
-        (new Date()).getTime()
-        ], null, null);
-    });
-}
+ls_sav.innerHTML = "Saved!";
 
-sav.innerHTML = "Saved!";
-
-setTimeout(function(){sav.parentNode.removeChild(sav)},1000);
+setTimeout(function(){ls_sav.parentNode.removeChild(ls_sav)},1000);

@@ -8,10 +8,11 @@ $(function() {
       });
 
     if (window.openDatabase) {
-
       db = window.openDatabase("fifolinks", "0.1");
 
       db.transaction(function(tx) {
+          monthAgo = new Date((new Date()).getTime() - 2629743830).getTime();
+          tx.executeSql("DELETE FROM links WHERE (timestamp < ? AND read = ?)", [monthAgo, true], loadLinks, handleError);
           tx.executeSql("SELECT * FROM links ORDER BY timestamp DESC", [], loadLinks, handleError);
         });
 
@@ -78,15 +79,13 @@ function addLinkElement(el,item) {
 
           $('#' +newParentType+ '_links').prepend($('#'+linkId))
         });
-
-      return false;
     });
 }
 
 function handleError(tx, err) {
   // No such table
   if (err.code == 1 && err.message == "no such table: links") {
-    tx.executeSql("CREATE TABLE links (id REAL UNIQUE, label TEXT, url TEXT, read BOOLEAN, timestamp REAL)", [], null, handleError);
+    tx.executeSql("CREATE TABLE links (id REAL UNIQUE, label TEXT, url TEXT UNIQUE, read BOOLEAN, timestamp REAL)", [], null, handleError);
   } else {
     $('#error').html("SQL ERROR[" +err.code+ "]: " + err.message).show('medium');
   }

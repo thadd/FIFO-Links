@@ -13,6 +13,6 @@ Installation
 * Install all the files on a server somewhere
 * Install the bookmarklet (replace the URL with the location of your server):
 
-  javascript:(function(){var d=document,z=d.createElement('scr'+'ipt'),b=d.body;try{if(!b)throw(0);z.setAttribute('src','http://localhost/linksaver.js');b.appendChild(z);}catch(e){alert('Please wait until the page has loaded.');}})()
+  javascript:(function(){var%20ls_d=document,ls_z=ls_d.createElement('scr'+'ipt'),ls_b=ls_d.body;try{if(!ls_b)throw(0);ls_z.setAttribute('src','http://localhost/~tselden/fifolinks/linksaver.js');ls_b.appendChild(ls_z);}catch(e){alert('Please%20wait%20until%20the%20page%20has%20loaded.');}})()
 
 * You're ready for primetime
