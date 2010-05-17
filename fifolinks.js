@@ -127,13 +127,17 @@ function swapLink(id) {
   if (newParentType == "unread") {
     el.slideUp(200,function(){
         $('#' +newParentType+ '_links').append(el)
+        cleanupReadLinks(el,newParentType);
       }).slideDown(200);
   } else {
     el.slideUp(200,function(){
         $('#' +newParentType+ '_links').prepend(el)
+        cleanupReadLinks(el,newParentType);
       }).slideDown(200);
   }
+}
 
+function cleanupReadLinks(el, newParentType) {
   var link = el.find('a.primary');
   link.removeClass('read');
   if (newParentType == 'read') link.addClass('read');
