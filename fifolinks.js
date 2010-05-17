@@ -63,6 +63,8 @@ function addLinkElement(el,item) {
       '<a href="#" class="swap">' + (item.read == 'true' ? 'Mark unread' : 'Mark read') + '</a>' +
       '<span class="separator">|</span>' +
       '<a href="#" class="delete">Delete</a>' +
+      '</div>' +
+      '<div style="clear:both;"></div>' +
       '</li>'
   );
 

@@ -64,11 +64,14 @@ html, body {
 
 .link .date {
   font-size: 0.7em;
+  margin-top: 10px;
   text-align: right;
+  float: right;
 }
 
 .actions {
-  margin: 0 0 3px 2px;
+  margin: 5px 0 3px 2px;
+  float: left;
 }
 
 .actions a {
