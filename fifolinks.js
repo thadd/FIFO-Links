@@ -14,7 +14,7 @@ $(function() {
           monthAgo = new Date((new Date()).getTime() - 2629743830).getTime();
           tx.executeSql("DELETE FROM links WHERE (timestamp < ? AND read = ?)", [monthAgo, true], null, handleError);
           tx.executeSql("SELECT * FROM links WHERE read = ? ORDER BY timestamp ASC", [false], loadLinks, handleError);
-          tx.executeSql("SELECT * FROM links WHERE read = ? ORDER BY timestamp DESC", [true], loadLinks, handleError);
+          tx.executeSql("SELECT * FROM links WHERE read = ? ORDER BY timestamp DESC LIMIT 50", [true], loadLinks, handleError);
         });
 
     } else {
@@ -123,9 +123,13 @@ function swapLink(id) {
 
   // Move the link
   if (newParentType == "unread") {
-    $('#' +newParentType+ '_links').append(el)
+    el.slideUp(200,function(){
+        $('#' +newParentType+ '_links').append(el)
+      }).slideDown(200);
   } else {
-    $('#' +newParentType+ '_links').prepend(el)
+    el.slideUp(200,function(){
+        $('#' +newParentType+ '_links').prepend(el)
+      }).slideDown(200);
   }
 
   var link = el.find('a.primary');
