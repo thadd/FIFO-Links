@@ -53,7 +53,7 @@ function addLink(url,label) {
 
 function addLinkElement(el,item) {
   el.append(
-    '<li id="link_' + item.id + '" class="link">' +
+    '<li id="link_' + item.id + '" class="link" style="display:none;">' +
       '<a href="' + item.url + '" ' + (item.read == 'true' ? 'class="primary read">' : 'class="primary">') +
       '<div class="label">' + item.label + '</div>' +
       '<div class="url">' + item.url + '</div>' +
@@ -68,6 +68,7 @@ function addLinkElement(el,item) {
       '</li>'
   );
 
+  el.find('#link_' + item.id).slideDown(200);
   el.find('#link_' + item.id + ' a.primary').click(linkClick);
   el.find('#link_' + item.id + ' a.swap').click(swapClick);
   el.find('#link_' + item.id + ' a.delete').click(deleteClick);
