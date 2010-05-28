@@ -1,11 +1,13 @@
 var ls_d = document;
 var ls_href = document.location.href;
 
-var ls_sav = ls_d.createElement('div');
-ls_sav.setAttribute('id','fifo_save');
-ls_sav.setAttribute('style','text-align:center;width:150px;position:absolute;top:30px;left:30px;background-color:rgba(180,210,180,0.85);padding:20px 50px;font-size:16pt;border:2px solid #444;z-index:99999;');
-ls_sav.innerHTML = "Saving...";
-ls_d.body.appendChild(ls_sav);
+if (ls_d.getElementById('fifo_save') == null) {
+  var ls_sav = ls_d.createElement('div');
+  ls_sav.setAttribute('id','fifo_save');
+  ls_sav.setAttribute('style','text-align:center;width:150px;position:absolute;top:30px;left:30px;background-color:rgba(180,210,180,0.85);padding:20px 50px;font-size:16pt;border:2px solid #444;z-index:99999;');
+  ls_sav.innerHTML = "Saving...";
+  ls_d.body.appendChild(ls_sav);
+}
 
 if (/google\.com\/reader/.test(ls_href)) {
   var ls_nodes = ls_d.getElementById('current-entry').childNodes;
@@ -51,8 +53,3 @@ ls_frame.setAttribute('src','http://fifolinks.com/catcher.html?url='+encodeURICo
 ls_d.body.appendChild(ls_frame);
 setTimeout(function(){ls_frame.parentNode.removeChild(ls_frame)},10000);
 } catch(err) {}
-
-
-ls_sav.innerHTML = "Saved!";
-
-setTimeout(function(){ls_sav.parentNode.removeChild(ls_sav)},1000);

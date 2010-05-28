@@ -44,4 +44,7 @@ $(function() {
         });
     }
 
+    ls_sav.innerHTML = "Saved!";
+
+    setTimeout(function(){ls_sav.parentNode.removeChild(ls_sav)},1000);
   });

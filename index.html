@@ -83,7 +83,7 @@
           <p>Drag the link below to your bookmarks bar and then every time you click it,
           the current page will be saved to your links.</p>
 
-          <p class="link_block"><a href="javascript:(function(){var%20ls_d=document,ls_z=ls_d.createElement('scr'+'ipt'),ls_b=ls_d.body;try{if(!ls_b)throw(0);ls_z.setAttribute('src','http://fifolinks.com/linksaver.js');ls_b.appendChild(ls_z);}catch(e){alert('Please%20wait%20until%20the%20page%20has%20loaded.');}})()">Read later</a></p>
+          <p class="link_block"><a href="javascript:(function(){var%20ls_d=document,ls_z=ls_d.createElement('scr'+'ipt'),ls_b=ls_d.body;try{if(!ls_b)throw(0);ls_sav=ls_d.createElement('div');ls_sav.setAttribute('id','fifo_save');ls_sav.setAttribute('style','text-align:center;width:150px;position:absolute;top:30px;left:30px;background-color:rgba(180,210,180,0.85);padding:20px 50px;font-size:16pt;border:2px solid #444;z-index:99999;');ls_sav.innerHTML='Saving…';ls_d.body.appendChild(ls_sav);ls_z.setAttribute('src','http://fifolinks.com/linksaver.js');ls_b.appendChild(ls_z);}catch(e){alert('Please%20wait%20until%20the%20page%20has%20loaded.');}})()">Read later</a></p>
 
           <p class="link_block close"><a href="#" class="close">Close</a></p>
         </div>
